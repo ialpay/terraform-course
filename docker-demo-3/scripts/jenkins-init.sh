@@ -24,32 +24,22 @@ mkdir -p /var/lib/jenkins
 echo '/dev/data/volume1 /var/lib/jenkins ext4 defaults 0 0' >> /etc/fstab
 mount /var/lib/jenkins
 
-# install jenkins and docker
+
 wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
 echo "deb http://pkg.jenkins.io/debian-stable binary/" >> /etc/apt/sources.list
 apt-get update
-apt-get install -y jenkins=${JENKINS_VERSION} unzip docker.io
-
-# enable docker and add perms
+apt-get install -y python3
+apt-get install -y  openjdk-8-jre
+update-java-alternatives --set java-1.8.0-openjdk-amd64
+apt-get install -y jenkins unzip docker.io
+apt-get install -y awscli
+export VER="0.11.13"
+unzip terraform_${VER}_linux_amd64.zip
+mv terraform /usr/local/bin/
+terraform -v
 usermod -G docker jenkins
 systemctl enable docker
 service docker start
 service jenkins restart
-
-# install pip
-wget -q https://bootstrap.pypa.io/get-pip.py
-python get-pip.py
-python3 get-pip.py
-rm -f get-pip.py
-# install awscli
-pip install awscli
-
-# install terraform
-TERRAFORM_VERSION="0.11.7"
-wget -q https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
-&& unzip -o terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin \
-&& rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-
-# clean up
 apt-get clean
-rm terraform_0.7.7_linux_amd64.zip
+rm terraform_${VER}_linux_amd64.zip
