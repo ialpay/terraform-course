@@ -2,11 +2,11 @@ variable "AWS_REGION" {
   default = "eu-west-1"
 }
 variable "PATH_TO_PRIVATE_KEY" {
-  default = "/Users/mac/.ssh/id_rsa"
+  default = "/home/ubuntu/.ssh/id_rsa"
 }
 
 variable "PATH_TO_PUBLIC_KEY" {
-  default = "/Users/mac/.ssh/id_rsa.pub"
+  default = "/home/ubuntu/.ssh/id_rsa.pub"
 }
 
 variable "ECS_INSTANCE_TYPE" {
